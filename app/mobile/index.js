@@ -319,7 +319,7 @@ module.exports = generators.Base.extend({
     wiredep({
       bowerJson: bowerJson,
       directory: 'bower_components',
-      exclude: ['bootstrap-sass', 'bootstrap.js'],
+      exclude: ['bootstrap', 'bootstrap.js'],
       ignorePath: /^(\.\.\/)*\.\./,
       src: 'app/index.html'
     });
