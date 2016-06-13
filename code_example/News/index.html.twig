@@ -1,0 +1,145 @@
+{% extends 'ui:web:layout.html.twig' %}
+{% import 'ui:web/Macros:ads.html.twig' as ads %}
+
+{% set var_competition = ui_get_competition(app.request.get('competition')) %}
+{% set var_competition_code = var_competition ? var_competition.code : null %}
+{% set var_canonical = url('route_news_paginator', {page: app.request.get('page', 1)}) %}
+{% set var_sharing = "Balltoro - รายงานผลฟุตบอล ข่าวฟุตบอล ตารางคะแนน ข่าวอัปเดท" %}
+{% set is_mobile_view = is_mobile_view() %}
+
+{% block init %}
+
+    {% if var_competition %}
+        {% set competition_label = sprintf('<span class="breadcrumb--hiden">%s — </span><span>%s<span>', var_competition.name, var_competition.code|upper) %}
+        {% set title = "ข่าวฟุตบอล ข่าวฟุตบอล ข่าวฟุตบอลไทย ผลบอล ตารางคะแนน ข่าวอัพเดทจาก" ~ var_competition.name %}
+        {% set keywords = "ข่าวฟุตบอล, ข่าวบอล, ผลบอล, ผลบอลสด, ผลการแข่งขัน, ผลฟุตบอล, วิเคราะห์บอล, ผลบอล " ~ var_competition.name ~ " " ~ var_competition.code %}
+        {% set description = "รายงานข่าวฟุตบอล ไฮไลท์ฟุตบอล อัพเดทตารางคะแนน วิเคราะห์ผลบอล อัพเดทข่าวฟุตบอล " ~ var_competition.name %}
+
+        {{ ui_page_options({
+            'breadcrumbs': [
+                ["หน้าหลัก", path('route_homepage')],
+                ["ui.trans.news.web.breadcrumb.index"|trans, path('route_news_index')],
+                [competition_label],
+            ],
+            'canonical': var_canonical,
+            'title': title,
+            'keywords': keywords,
+            'description': description,
+            'heading': var_competition.name,
+            'metas': {
+                'property': {
+                    'og:url': var_canonical,
+                    'og:title': title,
+                    'og:description': description,
+                    'og:image:url': var_site_logo,
+                    'og:image:secure_url': var_site_logo,
+                },
+                'twitter:card': 'summary_large_image',
+                'twitter:site': var_canonical,
+                'twitter:title': title,
+                'twitter:description': description,
+                'twitter:image':  var_site_logo,
+            }
+        }) }}
+    {% else %}
+        {% set title = "ข่าวฟุตบอล ผลบอล ตารางคะแนน ข่าวบอลอัพเดท" %}
+        {% set keywords = "ข่าวฟุตบอล, ข่าวบอล, ผลบอล, ผลบอลสด, ผลการแข่งขัน, ผลฟุตบอล, วิเคราะห์บอล, ผลบอลพรีเมียร์ลีก, ผลบอลไทยพรีเมียร์ลีก, ไฮไลท์ฟุตบอล" %}
+        {% set description = "รายงานข่าวฟุตบอล ไฮไลท์ฟุตบอล อัพเดทตารางคะแนน วิเคราะห์ผลบอล อัพเดทข่าวฟุตบอล" %}
+        {% set heading = "รายงานข่าวฟุตบอล ไฮไลท์ฟุตบอล อัพเดทตารางคะแนน วิเคราะห์ผลบอล อัพเดทข่าวฟุตบอล" %}
+
+        {{ ui_page_options({
+            'breadcrumbs': [
+                ["หน้าหลัก", path('route_homepage')],
+                ["ui.trans.news.web.breadcrumb.index"|trans],
+            ],
+            'canonical': var_canonical,
+            'title': title,
+            'keywords': keywords,
+            'description': description,
+            'heading': heading,
+            'metas': {
+                'property': {
+                    'og:url': var_canonical,
+                    'og:title': title,
+                    'og:image:url': var_site_logo,
+                    'og:image:secure_url': var_site_logo,
+                },
+                'twitter:card': 'summary_large_image',
+                'twitter:site': var_canonical,
+                'twitter:title': title,
+                'twitter:image':  var_site_logo,
+            }
+        }) }}
+    {% endif %}
+{% endblock %}
+
+{% block cover %}{% include('ui:web/Cover:base.html.twig') %}{% endblock %}
+
+{% block social_box %}
+    <div class="social-box">
+        <a href="http://www.facebook.com/sharer/sharer.php?u={{ var_canonical }}" target="_blank"
+           class="social-box__btn social-box__btn--facebook">
+            <i class="fa fa-facebook"></i>
+        </a>
+        <a href="https://twitter.com/intent/tweet?original_referer={{ var_canonical }}&text={{ var_sharing }}&via=BalltoroNews"
+           target="_blank" class="social-box__btn social-box__btn--twitter">
+            <i class="fa fa-twitter"></i>
+        </a>
+        <a href="https://plus.google.com/share?url={{ var_canonical }}" target="_blank"
+           class="social-box__btn social-box__btn--google-plus">
+            <i class="fa fa-google-plus"></i>
+        </a>
+        {% if is_mobile_view %}
+            <a href="http://line.me/R/msg/text/?{{ var_sharing }}%20%20{{ var_canonical }}" target="_blank"
+               class="social-box__btn social-box__btn--line">
+                <i class="social-box__icon--line"></i>
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row news-content">
+        <div class="col-md-9 news-content__left">
+            {% if is_mobile_view %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="index-layout__hr"></div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {{ render(controller('ToroNewsBundle:Frontend:featured', {limit: is_mobile_view ? 5 : 7, imageSize: is_mobile_view ? '384x211' : '840x462'})) }}
+
+            <div class="ad-box">{{ ads.google('8354245090', 'horizontal') }}</div>
+
+            <div class="row">
+                {% include 'ui:web/News:_latest-news.html.twig' with {'news': news} %}
+            </div>
+
+            {% if is_mobile_view %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ad-box">{{ ads.google('1947784693', 'rectangle') }}</div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-3 news-content__right">
+
+            {% block fb_likebox %}
+                <div class="fb-page" data-href="https://www.facebook.com/balltoro/" data-small-header="false"
+                     data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false">
+                    <div class="fb-xfbml-parse-ignore">
+                        <blockquote cite="https://www.facebook.com/balltoro/">
+                            <a href="https://www.facebook.com/balltoro/">ผลบอล บอลวันนี้ ตารางบอล วิเคราะห์บอล balltoro</a>
+                        </blockquote>
+                    </div>
+                </div>
+            {% endblock %}
+
+            <div class="ad-box">{{ ads.google('1947784693', 'rectangle') }}</div>
+        </div>
+    </div>
+{% endblock %}

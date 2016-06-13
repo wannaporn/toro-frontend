@@ -1,0 +1,13 @@
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .scoop {
+        padding-top: 13px;
+        &__headline {
+            font-size: 1em;
+            padding: 5px;
+        }
+        &__time {
+            font-size: 0.8em;
+            padding: 0;
+        }
+    }
+}

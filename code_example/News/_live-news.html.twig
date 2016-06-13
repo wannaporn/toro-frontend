@@ -1,0 +1,20 @@
+{% set content = ui_extra_content_title(content) %}
+{% set extra_content = ui_extra_content_title(extra_content) %}
+
+<div class="news-show__body--content-tab">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#content" aria-controls="content" role="tab" data-toggle="tab">{{ content.title }}</a>
+        </li>
+        <li role="presentation">
+            <a href="#extra_content" aria-controls="extra_content" role="tab" data-toggle="tab">{{ extra_content.title }}</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="content">{{ content.body|raw }}</div>
+        <div role="tabpanel" class="tab-pane" id="extra_content">{{ extra_content.body|raw }}</div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+.latest-news-1st {
+    padding: $base-padding 0;
+    &__hr {
+        border-top: $base-sub-border;
+        padding: $base-padding 0;
+    }
+    &__time {
+        @include base-extra();
+        padding-top: 5px;
+        i {
+            &:before {
+                padding-right: 5px;
+            }
+        }
+    }
+    &__headline {
+        @include base-headline();
+        padding: 10px 0;
+        &:hover {
+            @include base-hover()
+        }
+    }
+    &__subhead {
+        @include base-subhead();
+    }
+    &__image {
+        img {
+            width: 100%;
+            &:hover {
+                @include base-hover();
+            }
+        }
+    }
+}
+
+.latest-news-2nd {
+    border-top: 1px solid $base-sub-border-color;
+    padding: $base-padding 0;
+    &__right {
+        padding-left: 0;
+    }
+    &__time {
+        @include base-extra();
+        i {
+            &:before {
+                padding-right: 5px;
+            }
+        }
+    }
+    &__headline {
+        @include base-headline();
+        &:hover {
+            @include base-hover()
+        }
+    }
+    &__subhead {
+        @include base-subhead();
+    }
+    &__image {
+        img {
+            width: 100%;
+            &:hover {
+                @include base-hover();
+            }
+        }
+    }
+    &--overflow {
+        overflow: hidden;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .latest-news-1st {
+        height: 309px;
+        overflow: hidden;
+        &__headline {
+            font-size: $mobile-headline;
+        }
+        &__subhead {
+            font-size: $mobile-subhead;
+        }
+        &__image {
+            img {
+                height: auto;
+            }
+        }
+    }
+    .latest-news-2nd {
+        height: auto;
+        &__right {
+            padding-left: 15px;
+        }
+        &__social {
+            margin-top: 5px;
+        }
+        &__time {
+            font-size: 1em;
+        }
+        &__headline {
+            font-size: $mobile-headline;
+        }
+        &__subhead {
+            font-size: $mobile-subhead;
+        }
+        &__left {
+            padding-right: 0;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .latest-news-1st {
+        height: 250px;
+        overflow: hidden;
+    }
+}

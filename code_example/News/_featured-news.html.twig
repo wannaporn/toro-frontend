@@ -1,0 +1,9 @@
+{% from 'ui:web/Macros:imgs.html.twig' import imgs %}
+{% set news_length = news|length %}
+{% set is_mobile_view = is_mobile_view() %}
+
+{% if is_mobile_view %}
+    {{ include('ui:web/News:_featured-news.mobile.html.twig') }}
+{% else %}
+    {{ include('ui:web/News:_featured-news.desktop.html.twig') }}
+{% endif %}

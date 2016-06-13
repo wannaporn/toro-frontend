@@ -1,0 +1,51 @@
+.scoop-mobile {
+    border-bottom: $hot-news-border-mobile;
+    padding-bottom: $base-padding;
+    margin-bottom: $base-padding;
+    &__header {
+        border-bottom: $base-main-border;
+        position: relative;
+        &--main {
+            @include base-header();
+            margin-bottom: 0;
+        }
+        &--more {
+            position: absolute;
+            top: 5px;
+            right: 0;
+            a {
+                display: block;
+            }
+        }
+    }
+    &__headline {
+        @include base-headline();
+        padding-bottom: $base-padding;
+        height: 115px;
+        &--single {
+            @include base-headline();
+            padding-bottom: $base-padding + 5px;
+            height: initial;
+        }
+    }
+    &__time {
+        @include base-extra();
+        padding: 5px 0;
+    }
+    &__image {
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+    &--more {
+        text-align: right;
+        a {
+            font-size: 1.2em;
+            padding: 30px 15px 0 0;
+        }
+        i {
+            margin-left: 5px;
+        }
+    }
+}

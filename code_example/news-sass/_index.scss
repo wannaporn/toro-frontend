@@ -1,0 +1,57 @@
+@import "show";
+@import "featured";
+@import "tablet/featured";
+@import "mobile/featured";
+@import "latest";
+@import "latest-index";
+@import "tablet/latest-index";
+@import "mobile/latest-index";
+@import "scoop";
+@import "tablet/scoop";
+@import "mobile/scoop";
+@import "popular";
+@import "similar";
+@import "show-featured";
+
+.news-content {
+    margin: 0 auto;
+    &__left {
+        padding-left: 0;
+    }
+    &__right {
+        padding-right: 0;
+        text-align: center;
+        text-align: -webkit-center;
+    }
+}
+
+.paginator-news {
+    text-align: center;
+    .pagination {
+        padding-left: 15px;
+        margin: 100px 0;
+        li {
+            font-size: 1.1em;
+            a {
+                color: $base-link-color;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .news-content {
+        &__left {
+            padding-right: 0;
+        }
+        &__right {
+            padding-left: 0;
+        }
+    }
+    .paginator-news {
+        .pagination {
+            padding-left: 0;
+            margin: 45px 0;
+        }
+    }
+}

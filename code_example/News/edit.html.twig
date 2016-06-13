@@ -1,0 +1,349 @@
+{% extends 'ui:web/News:editor.html.twig' %}
+{% form_theme form 'ui:staff:forms.html.twig' %}
+{% import 'ui:web/Macros:ads.html.twig' as ads %}
+{% import 'ui:staff/Macros:buttons.html.twig' as btn %}
+{% from 'ui:web/Macros:imgs.html.twig' import imgs, plain %}
+
+{% set var_competition = news.competition %}
+{% set var_competition_code = var_competition ? var_competition.code : null %}
+{% set var_canonical_link = url('route_news_show_canonical', {id: news.id}) %}
+{% set var_news_image = ui_image_url(news.cover|default(news.image), '750x412') %}
+
+{% block init %}
+    {% if var_competition %}
+        {% set competition_label = sprintf('<span class="breadcrumb--hiden">%s — </span><span>%s<span>', var_competition.name, var_competition.code|upper) %}
+        {% set breadcrumbs = [
+            ["หน้าหลัก", path('route_homepage')],
+            ["ui.trans.news.web.breadcrumb.index"|trans, path('route_news_index')],
+            [competition_label, path('route_news_league', {competition: var_competition_code, slug: var_competition.name|lower|slugify})],
+            [news.id]
+        ] %}
+    {% else %}
+        {% set breadcrumbs = [
+            ["หน้าหลัก", path('route_homepage')],
+            ["ui.trans.news.web.breadcrumb.index"|trans, path('route_news_index')],
+            [news.id]
+        ] %}
+    {% endif %}
+
+    {{ ui_page_options({
+        'id': 'news-editor',
+        'breadcrumbs': breadcrumbs,
+        'title': news.headline,
+    }) }}
+{% endblock %}
+
+{% block content %}
+    {% set route = path("route_news_image_upload", {serviceName: 'news', resourceId: news.id}) %}
+
+    <div class="news-show loading-mask" ng-class="{loading: isUploading}" ng-controller="NewsEditorController"
+         ng-init="varRouteNewsUploadImage='{{ route }}'">
+
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4 btn-actions">
+                {% if is_granted('ROLE_EDITOR') %}
+                    <button class="btn btn-green" type="button" onclick="formSubmit()">{{ 'บันทึก' }}</button>
+                {% elseif is_granted('ROLE_AUTHOR') and true == news.authorState %}
+                    <button class="btn btn-green" type="button" onclick="formSubmit()">{{ 'บันทึก' }}</button>
+                {% endif %}
+                {% if is_granted('ROLE_EDITOR') %}
+                    {{ btn.button_transtions(news, 'route_editor_news_update_state') }}
+                    <a class="btn btn-default" href="{{ path('route_editor_news_index') }}">{{ 'All News' }}</a>
+                {% else %}
+                    {{ btn.button_transtions(news, 'route_author_news_update_state') }}
+                    <a class="btn btn-default" href="{{ path('route_author_news_index') }}">{{ 'All News' }}</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {{ form_start(form, {
+            method: 'PATCH',
+            attr: {
+                'ng-submit': 'submit()',
+                'onsubmit': 'return false;',
+            }
+        }) }}
+
+        {{ include('ui:web:flashes.html.twig') }}
+
+        {{ form_errors(form) }}
+
+        <div class="row">
+            <div class="col-md-8 news-show__left">
+                <div class="news-show__content">
+                    <div class="news-show__cover">
+                        <img ng-src="{{ "{{varNewsImageCover || '//:0'}}" }}"
+                             ng-init="varNewsImageCover='{{ var_news_image }}'">
+                        <div class="btn-group">
+                            <button class="btn btn-default btn-file"> {{ 'เลือกภาพใหม่' }}
+                                {{ form_widget(form.cover, {attr: {
+                                    'accept': 'image/*',
+                                    'ng-file-select': 'varNewsImageCover',
+                                    'ng-file-input': 'varNewsImageCoverInput',
+                                }}) }}
+                            </button>
+                            <button disabled class="btn btn-warning" ng-disabled="varNewsImageCoverChanged"
+                                    ng-click="resetNewsImageCover()">
+                                {{ 'ใช้ภาพเดิม' }}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="news-show__meta">
+                                {% if news.user %}
+                                    <div class="news-show__meta--author">
+                                        {{ news.user.displayName }}
+                                    </div>
+                                {% endif %}
+
+                                <div class="news-show__meta--published">
+                                    {{ news.publishedDate|localizeddate('medium', 'short') }}
+                                </div>
+
+                                <div class="news-show__meta--time"
+                                     data-humanize-time="{{ news.publishedDate.timestamp }}">
+                                    {{ ui_humans_time(news.publishedDate) }}
+                                </div>
+
+                                <div class="news-show__meta--url">
+                                    <div ng-editable="credit" ng-init="credit='{{ news.credit }}'"
+                                         data-empty="+ เพิ่มเครดิต ...">{{ news.credit }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="h1 news-show__content--headline" ng-editable="headline"
+                                 ng-init="headline='{{ news.headline }}'"
+                                 data-empty="+ เพิ่มหัวข้อ ...">{{ news.headline }}</div>
+
+                            <div class="col-xs-2 news-show__content--divider"></div>
+
+                            <div class="col-xs-10">
+                                <div class="h2 news-show__content--subhead" ng-editable="subhead"
+                                     ng-init="subhead='{{ news.subhead }}'"
+                                     data-empty="+ เพิ่มคำโปรย ...">{{ news.subhead }}</div>
+                            </div>
+
+                            <div class="news-show__content--description" ng-editable="description"
+                                 ng-init="description='{{ news.description }}'"
+                                 data-empty="+ เพิ่มรายละเอียด ..."
+                                 style="clear: both;">{{ news.description }}</div>
+
+                            <div class="news-show__content--highlight">
+                                <div class="h3" ng-editable="highlight" ng-init="highlight='{{ news.highlight }}'"
+                                     data-empty="+ เพิ่ม Highlight ...">{{ news.highlight }}</div>
+                            </div>
+
+                            <div class="news-show__body">
+                                {% if news.image and news.cover %}
+                                    <div class="news-show__body--image">
+                                        {{ imgs(news.image, '700x395', news.subhead, true) }}
+                                    </div>
+                                {% endif %}
+                                <div class="news-show__body--content" editable="content"
+                                     data-empty="+ เพิ่มเนื้อหาข่าว ..."
+                                     data-html>{{ str_replace('../../../media', ui_site_param('site_url'), news.content)|raw }}</div>
+                            </div>
+
+                            <div class="news-show__socials">
+                                {{ block('social_box') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 news-show__right">
+                {% set seasonRemote = {
+                    url: path('route_ajax_seasons', {competition: '@value'}),
+                    valueField: 'id',
+                    labelField: 'name'
+                } %}
+
+                {{ form_row(form.publishedDate) }}
+
+                {{ form_row(form.category, {selectize: {
+                    create: true,
+                    persist: false,
+                    remote: {
+                        url: path('route_ajax_news_categories'),
+                        clearOnLoad: false,
+                        valueField: 'name'
+                    }
+                }}) }}
+
+                {{ form_row(form.competition, {selectize: {chain: 'season'}}) }}
+                {{ form_row(form.season, {selectize: {ref: 'season', remote: seasonRemote}}) }}
+
+                {{ form_row(form.tags, {selectize: {
+                    create: true,
+                    persist: false,
+                    remote: {
+                        url: path('dos_tagging_search'),
+                        clearOnLoad: false,
+                        valueField: 'name'
+                    }
+                }}) }}
+
+                {{ form_row(form.relatedClubs, {
+                    selectize: {
+                        remote: {
+                            url: path('route_ajax_club_search'), clearOnLoad: false
+                        }
+                    }
+                }) }}
+
+                <div style="visibility: hidden; position: absolute; width: 0;height: 0;">
+                {{ form_widget(form.credit, {attr: {'ng-model': 'credit'}}) }}
+                {{ form_widget(form.headline, {attr: {'ng-model': 'headline'}}) }}
+                {{ form_widget(form.subhead, {attr: {'ng-model': 'subhead'}}) }}
+                {{ form_widget(form.highlight, {attr: {'ng-model': 'highlight'}}) }}
+                {{ form_widget(form.description, {attr: {'ng-model': 'description'}}) }}
+                {{ form_widget(form.content, {attr: {'ng-model': 'content'}}) }}
+                </div>
+                {#{{ form_row(form.publishedDate) }}
+                {{ form_row(form.cover, {preview: '200x115'}) }}
+                {{ form_row(form.image, {preview: '200x115'}) }}#}
+            </div>
+
+            <div class="col-md-12">
+                <div class="ad-box">
+                    {{ ads.google('8354245090', 'horizontal') }}
+                </div>
+            </div>
+        </div>
+
+        {{ form_widget(form._token) }}
+        {{ form_end(form, {render_rest: false}) }}
+
+    </div>
+{% endblock content %}
+
+{% block styles %}
+    {{ parent() }}
+
+    <style>
+        .btn-actions {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .btn-actions .btn {
+            margin: 0 5px;
+            font-size: 1.2em;
+            border-radius: 0;
+        }
+        .ephox-candy-mountain:hover {
+            outline: 1px dashed rgba(52, 152, 219, 0.5) !important;
+        }
+
+        .ephox-candy-mountain-active,
+        .ephox-candy-mountain-active:hover {
+            outline: 1px dashed rgba(52, 152, 219, 0.1) !important;
+        }
+
+        .selectize-input {
+            border-radius: 0;
+        }
+
+        .news-show__cover {
+            position: relative;
+        }
+
+        .news-show__cover .btn-group {
+            position: absolute;
+            bottom: 5px;
+            left: 40%;
+            opacity: .5;
+        }
+
+        .news-show__cover .btn-group:hover {
+            opacity: 1;
+        }
+
+        [editable]:empty:after,
+        [ng-editable]:empty:after {
+            content: attr(data-empty);
+            font-style: italic;
+            color: #e0dfe3;
+        }
+
+        .selectize-input > input {
+
+        }
+
+        .selectize-control.multi .selectize-input [data-value] {
+            background-image: none;
+            border-radius: 0;
+            color: #fff;
+            text-shadow: none;
+        }
+
+        .selectize-control.multi .selectize-input > div {
+            border: 1px solid #0073bb;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('ui/textboxio/textboxio.js') }}"></script>
+    <script>
+        window.NewsContentImages = [];
+        var configInvisible = {
+            ui: {
+                toolbar: {
+                    visible: false
+                }
+            }
+        };
+        var config = {
+            ui: {
+                toolbar: {
+                    offset: {
+                        top: -55,
+                        left: 55
+                    }
+                }
+            },
+            css: {
+                // Configure a list of available CSS classes
+                styles: [
+                    {rule: 'h4.h4', text: 'Heading 4'}
+                ]
+            },
+            images: {
+                upload: {
+                    handler: function (data, success, failure) {
+                        if (success) {
+                            window.NewsContentImages.push({
+                                id: data.id(),
+                                im: data.base64(),
+                                ext: data.blob().type.replace('image\/', '')
+                            });
+                        }
+                    }
+                }
+            }
+        };
+
+        textboxio.inline('[ng-editable="headline"]', configInvisible);
+        textboxio.inline('[ng-editable="subhead"]', configInvisible);
+        textboxio.inline('[ng-editable="credit"]', configInvisible);
+        textboxio.inline('[ng-editable="description"]', configInvisible);
+        textboxio.inline('[ng-editable="highlight"]', configInvisible);
+        textboxio.inline('[editable="content"]', config);
+
+        function formSubmit()
+        {
+            $('form[ng-submit]').submit();
+        }
+    </script>
+{% endblock %}

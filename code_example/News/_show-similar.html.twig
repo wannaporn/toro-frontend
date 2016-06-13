@@ -1,0 +1,57 @@
+{% import 'ui:web/Macros:ads.html.twig' as ads %}
+{% from 'ui:web/Macros:imgs.html.twig' import imgs %}
+{% set is_mobile_view = is_mobile_view() %}
+
+{% if news|length %}
+    {% if is_mobile_view %}
+        <div class="similar-news-mobile row">
+            <div class="col-md-12">
+                <div class="similar-news-mobile__header">
+                    <p class="similar-news-mobile__header--main">เรื่องที่เกี่ยวข้อง</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                {% for r in news %}
+                    {% set link = path('route_news_show', {id: r.id, slug: r.headline|slugify}) %}
+                    <div class="similar-news-mobile__content">
+                        <div class="similar-news-mobile__headline"><a href="{{ link }}">{{ r.headline }}</a></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div class="similar-news row">
+            <div class="col-md-12">
+                <div class="similar-news__header">
+                    <p class="similar-news__header--main">เรื่องที่เกี่ยวข้อง</p>
+                </div>
+            </div>
+            {% for r in news %}
+                <div class="col-md-6">
+                    {% set link = path('route_news_show', {id: r.id, slug: r.headline|slugify}) %}
+                    <div class="similar-news__content">
+                        <div class="similar-news__image">
+                            <a href="{{ link }}">{{ imgs(r.cover|default(r.image), '165x91', r.headline) }}</a>
+                        </div>
+                        <div class="similar-news__time">
+                            <i class="fa fa-clock-o"></i>
+                            {{ r.publishedDate|localizeddate('medium', 'short') }}
+                        </div>
+                        <div class="similar-news__headline">
+                            <a href="{{ link }}">{{ r.headline }}</a>
+                        </div>
+                        <div class="similar-news__subhead">{{ r.subhead|truncate(50) }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endif %}
+
+<div class="ad-box">
+    {% if is_mobile_view %}
+        {{ ads.google('8354245090', 'rectangle') }}
+    {% else %}
+        {{ ads.google('8354245090', 'vertical') }}
+    {% endif %}
+</div>

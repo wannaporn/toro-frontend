@@ -1,0 +1,58 @@
+{% from 'ui:web/Macros:imgs.html.twig' import imgs %}
+{% set is_mobile_view = is_mobile_view() %}
+
+<div class="latest-news">
+    {% if is_mobile_view %}
+        <div class="latest-index-mobile__header">
+            <p class="latest-index-mobile__header--main">News</p>
+            <p class="latest-index-mobile__header--sub">ข่าวและความเคลื่อนไหวล่าสุด</p>
+            <div class="latest-index-mobile__header--more">
+                <a href="{{ path('route_news_index') }}"><i class="fa fa-angle-right fa-3x"></i></a>
+            </div>
+        </div>
+    {% else %}
+        <div class="latest-index__header">
+            <p class="latest-index__header--main">ความเคลื่อนไหวล่าสุด</p>
+        </div>
+    {% endif %}
+
+    {% for r in news %}
+        {% set link = path('route_news_show', {id: r.id, slug: r.headline|slugify}) %}
+        <div class="latest-index__content">
+            <div class="row">
+                <div class="col-xs-4 latest-index__left">
+                    <div class="latest-index__image">
+                        <a href="{{ link }}">
+                            {{ imgs(r.cover|default(r.image), is_mobile_view ? '300x250' : '202x111', r.headline) }}
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-8 latest-index__right">
+                    <div class="latest-index__time">
+                        <i class="fa fa-clock-o"></i>{{ r.publishedDate|localizeddate('medium', 'short') }}
+                    </div>
+                    <div class="latest-index__headline">
+                        <a href="{{ link }}">{{ r.headline }}</a>
+                    </div>
+                    <div class="latest-index__subhead">
+                        {% if not is_mobile_view %}
+                            {{ r.subhead }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+<div class="{% if is_mobile_view %}latest-index-mobile--more{% else %}latest-index--more{% endif %}">
+    <a href="{{ path('route_news_index') }}">
+        ข่าวทั้งหมด
+        {% if is_mobile_view %}
+            <i class="fa fa-angle-right"></i>
+        {% else %}
+            <i class="fa fa-hand-o-right"></i>
+        {% endif %}
+    </a>
+</div>

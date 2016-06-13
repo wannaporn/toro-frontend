@@ -1,0 +1,57 @@
+{% from 'ui:web/Macros:paginator.html.twig' import paginator %}
+{% from 'ui:web/Macros:imgs.html.twig' import imgs %}
+{% set is_mobile_view = is_mobile_view() %}
+
+<div class="col-md-12">
+    <div class="latest-index__header"></div>
+</div>
+
+{% for r in news %}
+    {% set link = path('route_news_show', {id: r.id, slug: r.headline|slugify}) %}
+
+    {% if loop.index == 5 or loop.index == 10 %}
+        <div class="col-md-12">
+            <div class="ad-box latest-news-2nd">
+                {{ ads.google('8354245090', 'horizontal') }}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="col-md-12">
+        <div class="latest-news-2nd">
+            <div class="row">
+                <div class="latest-news-2nd__left{% if is_mobile_view %} col-xs-4 {% else %} col-xs-3 {% endif %}">
+                    <div class="latest-news-2nd__image">
+                        <a href="{{ link }}">
+                            {{ imgs(r.cover|default(r.image), is_mobile_view ? '300x250' : '188x105', r.headline) }}
+                        </a>
+                    </div>
+                </div>
+                <div class="latest-news-2nd__right{% if is_mobile_view %} col-xs-8 {% else %} col-xs-9 {% endif %}">
+                    <div class="latest-news-2nd__time">
+                        <i class="fa fa-clock-o"></i>{{ r.publishedDate|localizeddate('medium', 'short') }}
+                    </div>
+                    <div class="latest-news-2nd__headline">
+                        <a href="{{ link }}">{{ r.headline }}</a>
+                    </div>
+                    <div class="latest-news-2nd__subhead">
+                        {% if not is_mobile_view %}
+                            {{ r.subhead }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<div class="col-md-12">
+    {% if var_competition %}
+        {{ paginator(news, {routeName: 'route_news_league_paginator', routeParams: {
+            competition: var_competition.code,
+            slug: var_competition.name|lower|slugify
+        }}) }}
+    {% else %}
+        {{ paginator(news, {routeName: 'route_news_paginator'}) }}
+    {% endif %}
+</div>

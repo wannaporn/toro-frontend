@@ -1,0 +1,34 @@
+{% import 'ui:web/Macros:ads.html.twig' as ads %}
+{% from 'ui:web/Macros:imgs.html.twig' import imgs %}
+{% set is_mobile_view = is_mobile_view() %}
+
+<div class="popular-news row">
+    <div class="col-md-12">
+        <div class="popular-news__header">
+            <p class="popular-news__header--main">ยอดนิยม</p>
+        </div>
+    </div>
+
+    {% for r in news %}
+        {% set link = path('route_news_show', {id: r.id, slug: r.headline|slugify}) %}
+        <div class="col-md-6">
+            <div class="popular-news__content">
+                <div class="popular-news__image">
+                    <a href="{{ link }}">{{ imgs(r.cover|default(r.image), is_mobile_view ? '384x211' : '165x91', r.headline) }}</a>
+                </div>
+                <div class="popular-news__time">
+                    <i class="fa fa-clock-o"></i>
+                    {{ r.publishedDate|localizeddate('medium', 'short') }}
+                </div>
+                <div class="popular-news__headline">
+                    <a href="{{ link }}">{{ r.headline }}</a>
+                </div>
+                <div class="popular-news__subhead">{{ r.subhead|truncate(50) }}</div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="ad-box">
+    {{ ads.google('8354245090', 'rectangle') }}
+</div>
