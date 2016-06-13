@@ -1,0 +1,42 @@
+{% from 'ui:web/Macros:imgs.html.twig' import imgs %}
+{% set news_length = news|length %}
+
+{% if news_length %}
+    <div id="carousel" class="carousel slide" data-ride="carousel" data-pause="hover"
+         data-interval="10000">
+        <div class="carousel-inner">
+            {% for r in news %}
+                {% set link = path('route_news_show', {id: r.id, slug: r.headline|slugify}) %}
+                {% set subhead = r.subhead|truncate(100, true) %}
+
+                <div class="item {{ ui_css_if(loop.first, 'active') }}">
+                    <div class="featured-mobile">
+                        <div class="featured-mobile__image">
+                            <a href="{{ link }}">
+                                {{ imgs(r.cover|default(r.image), is_mobile_view ? '600x337' : '360x200', r.headline, false, null, false) }}
+                            </a>
+                        </div>
+                        <div class="featured-mobile__content">
+                            <div class="featured-mobile__content--time">
+                                <i class="fa fa-clock-o"></i>
+                                {{ r.publishedDate|localizeddate('medium', 'short') }}
+                            </div>
+                            <div class="featured-mobile__content--headline">
+                                <a href="{{ link }}">{{ r.headline }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+        <a class="left carousel-control control-thumb" href="!#carousel" role="button"
+           data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control control-thumb" href="!#carousel" role="button"
+           data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
+{% endif %}

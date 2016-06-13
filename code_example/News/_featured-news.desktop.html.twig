@@ -1,0 +1,42 @@
+{% from 'ui:web/Macros:imgs.html.twig' import imgs %}
+{% set news_length = news.iterator.count %}
+{% set thumb_item_length = 4 %}
+
+{% if news_length %}
+    <div class="row">
+        <div class="col-md-12">
+            <div id="carousel" class="carousel featured-wrapper" data-ride="carousel">
+                <ol class="carousel-indicators featured-indicators">
+                    {% for r in news %}
+                        <li data-target="#carousel" data-slide-to="{{ loop.index0 }}" class="{% if loop.first %} active {% endif %}"></li>
+                    {% endfor %}
+                </ol>
+                <div class="carousel-inner">
+                    {% for r in news %}
+                        {% set link = path('route_news_show', {id: r.id, slug: r.headline|slugify}) %}
+                        <div class="{% if loop.first %}item active{% else %} item {% endif %}"
+                             data-item="{{ loop.index0 }}">
+                            <div class="featured-content">
+                                <div class="featured-content__image">
+                                    <a href="{{ link }}">
+                                        {{ imgs(r.cover|default(r.image), imageSize, r.headline, false, null, false) }}
+                                    </a>
+                                </div>
+                                <div class="featured-content__time">
+                                    <i class="fa fa-clock-o"></i>
+                                    {{ r.publishedDate|localizeddate('medium', 'short') }}
+                                </div>
+                                <div class="featured-content__headline">
+                                    <a href="{{ link }}">{{ r.headline }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        {# no result#}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endif %}

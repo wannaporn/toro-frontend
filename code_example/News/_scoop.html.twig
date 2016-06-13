@@ -1,0 +1,64 @@
+{% from 'ui:web/Macros:imgs.html.twig' import imgs %}
+{% set is_mobile_view = is_mobile_view() %}
+
+{% if news|length %}
+    {% if is_mobile_view %}
+        <div class="scoop-mobile row">
+            <div class="col-md-12">
+                <div class="scoop-mobile__header">
+                    <p class="scoop-mobile__header--main">Special Scoops</p>
+                    <p class="scoop-mobile__header--sub">สกู๊ปพิเศษ</p>
+                    <div class="scoop-mobile__header--more">
+                        <a href="{{ path('route_scoop_index') }}"><i class="fa fa-angle-right fa-3x"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% for r in news %}
+                {% set link = path('route_scoop_show', {id: r.id, slug: r.headline|slugify}) %}
+
+                <div class="scoop-mobile__content {% if loop.index < 3 %}col-md-12{% else %}col-xs-6{% endif %}">
+                    <div class="scoop-mobile__image">
+                        <a href="{{ link }}">{{ imgs(r.cover|default(r.image), imageSize, r.headline) }}</a>
+                    </div>
+                    <div class="scoop-mobile__time">
+                        <i class="fa fa-clock-o"></i>
+                        {{ r.publishedDate|localizeddate('medium', 'short') }}
+                    </div>
+                    <div class="{% if loop.index < 3 %}scoop-mobile__headline--single{% else %}scoop-mobile__headline{% endif %}">
+                        <a href="{{ link }}">{{ r.headline }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="scoop-mobile--more">
+                <a href="{{ path('route_news_index') }}">
+                    สกู๊ปทั้งหมด<i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+            <div class="scoop-mobile--bottom"></div>
+        </div>
+    {% else %}
+        <div class="scoop">
+            <div class="scoop__header">
+                <p class="scoop__header--main">สกู๊ปพิเศษ</p>
+            </div>
+            {% for r in news %}
+                {% set link = path('route_scoop_show', {id: r.id, slug: r.headline|slugify}) %}
+
+                <div class="scoop__content">
+                    <div class="scoop__image">
+                        <a href="{{ link }}">{{ imgs(r.cover|default(r.image), imageSize, r.headline) }}</a>
+                    </div>
+                    <div class="scoop__time">
+                        <i class="fa fa-clock-o"></i>
+                        {{ r.publishedDate|localizeddate('medium', 'short') }}
+                    </div>
+                    <div class="scoop__headline">
+                        <a href="{{ link }}">{{ r.headline }}</a>
+                    </div>
+                </div>
+                <div class="scoop--bottom"></div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endif %}

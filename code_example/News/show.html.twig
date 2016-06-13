@@ -1,0 +1,181 @@
+{% extends 'ui:web:layout.html.twig' %}
+{% import 'ui:web/Macros:ads.html.twig' as ads %}
+{% from 'ui:web/Macros:imgs.html.twig' import imgs, plain %}
+
+{% set var_competition = news.competition %}
+{% set var_competition_code = var_competition ? var_competition.code : null %}
+{% set var_canonical_link = url('route_news_show_canonical', {id: news.id}) %}
+{% set is_mobile_view = is_mobile_view() %}
+{% set var_news_image = ui_image_url(news.cover|default(news.image), is_mobile_view ? '384x211' : '750x413') %}
+{% set var_news_image_origin = ui_image_url(news.cover|default(news.image)) %}
+
+{% block init %}
+    {% if var_competition %}
+        {% set competition_label = sprintf('<span class="breadcrumb--hiden">%s — </span><span>%s<span>', var_competition.name, var_competition.code|upper) %}
+        {% set breadcrumbs = [
+            ["หน้าหลัก", path('route_homepage')],
+            ["ui.trans.news.web.breadcrumb.index"|trans, path('route_news_index')],
+            [competition_label, path('route_news_league', {competition: var_competition_code, slug: var_competition.name|lower|slugify})],
+            [news.id]
+        ] %}
+    {% else %}
+        {% set breadcrumbs = [
+            ["หน้าหลัก", path('route_homepage')],
+            ["ui.trans.news.web.breadcrumb.index"|trans, path('route_news_index')],
+            [news.id]
+        ] %}
+    {% endif %}
+
+    {{ ui_page_options({
+        'breadcrumbs': breadcrumbs,
+        'title': news.headline,
+        'canonical': var_canonical_link,
+        'description': news.subhead,
+        'keywords': news.getTags(true),
+        'metas': {
+            'property': {
+                'og:url': var_canonical_link,
+                'og:title': news.headline,
+                'og:description': news.subhead,
+                'og:image:url': var_news_image|raw,
+                'og:image:secure_url': var_news_image|raw,
+            },
+            'twitter:card': 'summary_large_image',
+            'twitter:site': var_canonical_link,
+            'twitter:title': news.headline,
+            'twitter:description': news.subhead,
+            'twitter:image':  var_news_image|raw,
+        }
+    }) }}
+{% endblock %}
+
+{% block social_box %}
+    <div class="social-box-show">
+        <a href="http://www.facebook.com/sharer/sharer.php?u={{ var_canonical_link }}"
+           target="_blank" class="social-box-show__btn social-box-show__btn--facebook">
+            <i class="fa fa-facebook"></i>
+        </a>
+        <a href="https://twitter.com/intent/tweet?original_referer={{ var_canonical_link }}
+           &text={{ news.headline }}{{ var_canonical_link }}&via=BalltoroNews"
+           target="_blank" class="social-box-show__btn social-box-show__btn--twitter">
+            <i class="fa fa-twitter"></i>
+        </a>
+        <a href="https://plus.google.com/share?url={{ var_canonical_link }}"
+           target="_blank" class="social-box-show__btn social-box-show__btn--google-plus">
+            <i class="fa fa-google-plus"></i>
+        </a>
+        {% if is_mobile_view() %}
+            <a href="http://line.me/R/msg/text/?{{ news.headline }}%20%20{{ var_canonical_link }}"
+               target="_blank" class="social-box-show__btn social-box-show__btn--line">
+                <i class="social-box__icon--line"></i>
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <article class="news-show">
+        <div class="row">
+            <div class="col-md-8 news-show__left">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="news-show__hr"></div>
+                    </div>
+                </div>
+                <div class="news-show__content" itemscope="" itemtype="http://schema.org/NewsArticle">
+                    <span itemprop="mainEntityOfPage" content="{{ var_canonical_link }}"></span>
+
+                    <div class="news-show__cover" itemprop="associatedMedia image"
+                         itemscope="" itemtype="http://schema.org/ImageObject">
+                        {{ plain(var_news_image, news.headline, var_news_image_origin, null, false) }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="news-show__meta">
+                                {% include('ui:web/News:_show-meta.html.twig') %}
+                            </div>
+                            <div class="news-show__editor--action">
+                                {% if is_granted('ROLE_EDITOR') or (is_granted('ROLE_AUTHOR') and news.isAuthorState()) %}
+                                    <a class="btn btn-default" href="{{ path('route_news_preview', {id: news.id}) }}">
+                                        <i class="fa fa-pencil"></i> {{ "แก้ไขข่าว" }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <h1 class="news-show__content--headline" itemprop="headline">
+                                {{ news.headline }}
+                            </h1>
+                            <div class="col-xs-2 news-show__content--divider"></div>
+                            <div class="col-xs-10">
+                                <h2 class="news-show__content--subhead" itemprop="description">
+                                    {{ news.subhead }}
+                                </h2>
+                            </div>
+
+                            {% if news.description %}
+                                <div class="news-show__content--description" itemprop="description">
+                                    {{ news.description }}
+                                </div>
+                            {% endif %}
+
+                            {% if news.highlight %}
+                                <div class="news-show__content--highlight" itemprop="description">
+                                    <h3>{{ news.highlight }}</h3>
+                                </div>
+                            {% endif %}
+
+                            <div class="news-show__body" itemprop="articleBody">
+                                {% if news.image and news.cover %}
+                                    <div class="news-show__body--image" itemprop="associatedMedia image"
+                                         itemscope="" itemtype="http://schema.org/ImageObject">
+                                        {{ imgs(news.image, is_mobile_view ? '384x211' : '750x413', news.subhead, true) }}
+                                    </div>
+                                {% endif %}
+                                <div class="news-show__body--content">
+                                    {# using cache display #}
+                                    {% set content = str_replace('../../../media', ui_site_param('site_url'), news.content)|lazy_content('https://placehold.it/600x300.jpg/eeeeee?text=balltoro') %}
+
+                                    {% if news.hasExtraContent %}
+                                        {% set extra_content = str_replace('../../../media', ui_site_param('site_url'), news.extraContent)|lazy_content('https://placehold.it/600x300.jpg/eeeeee?text=balltoro') %}
+                                        {{ include('ui:web/News:_live-news.html.twig', {content: content, extra_content: extra_content}) }}
+                                    {% else %}
+                                        {{ content|raw }}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="news-show__socials">
+                                {% if is_mobile_view %}
+                                    {{ block('social_box') }}
+                                {% endif %}
+                            </div>
+
+                            <div class="ad-box">
+                                {% if is_mobile_view() %}
+                                    {{ ads.google('8354245090', 'horizontal') }}
+                                {% else %}
+                                    {{ ads.googleFixSize('display:inline-block;width:555px;height:90px;', '9335647098') }}
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 news-show__right">
+                {% if is_mobile_view() %}
+                    {{ render(controller('ToroNewsBundle:Frontend:similar', {news: news, limit: 4})) }}
+                    {{ render(controller('ToroNewsBundle:Frontend:featuredShow', {news: news, imageSize: is_mobile_view ? '295x163' : '360x198'})) }}
+                {% else %}
+                    {{ render(controller('ToroNewsBundle:Frontend:featuredShow', {news: news, imageSize: is_mobile_view ? '295x163' : '360x198'})) }}
+                    {{ render(controller('ToroNewsBundle:Frontend:popular', {news: news, limit: 4})) }}
+                    {{ render(controller('ToroNewsBundle:Frontend:similar', {news: news, limit: 4})) }}
+                {% endif %}
+            </div>
+        </div>
+    </article>
+
+{% endblock content %}

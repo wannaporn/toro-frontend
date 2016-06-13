@@ -1,0 +1,25 @@
+{% if news.user %}
+    <div class="news-show__meta--author" itemprop="author">
+        <span itemscope itemtype="http://schema.org/Person">
+            <span itemprop="name">{{ news.user.displayName }}</span>
+        </span>
+    </div>
+{% endif %}
+
+<div class="news-show__meta--published" itemprop="datePublished">
+    {{ news.publishedDate|localizeddate('medium', 'short') }}
+</div>
+
+<div class="news-show__meta--time" itemprop="dateModified" data-humanize-time="{{ news.publishedDate.timestamp }}">
+    {{ ui_humans_time(news.publishedDate) }}
+</div>
+
+<div class="news-show__meta--url">
+    {% if news.credit and news.creditUrl %}
+        <a href="{{ news.creditUrl }}" target="_blank">{{ news.credit }}</a>
+    {% elseif news.creditUrl %}
+        <a href="{{ news.creditUrl }}" target="_blank">{{ news.creditUrl }}</a>
+    {% else %}
+        <span>{{ news.credit }}</span>
+    {% endif %}
+</div>

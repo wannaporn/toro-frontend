@@ -1,0 +1,71 @@
+{% import 'ui:web/Macros:ads.html.twig' as ads %}
+{% from 'ui:web/Macros:imgs.html.twig' import imgs %}
+{% set is_mobile_view = is_mobile_view() %}
+
+<div class="featured-content__header">
+    <p class="featured-content__header--main">สกู๊ปแนะนำ</p>
+</div>
+{% if is_mobile_view %}
+    <div class="featured-sm-mobile row">
+        {% if news|length %}
+            {% for r in news %}
+                {% set link = path('route_news_show', {id: r.id, slug: r.headline|slugify}) %}
+                <div class="col-xs-6 featured-sm-mobile__content">
+                    <div class="featured-sm-mobile__image">
+                        <a href="{{ link }}">
+                            {{ imgs(r.cover|default(r.image), imageSize, r.headline, false, null, false) }}
+                        </a>
+                    </div>
+                    <div class="featured-sm-mobile__time">
+                        <i class="fa fa-clock-o">{{ r.publishedDate|localizeddate('medium', 'short') }}</i>
+                    </div>
+                    <div class="featured-sm-mobile__headline">
+                        <a href="{{ link }}">{{ r.headline }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% else %}
+<div class="featured-sm">
+    {% if news|length %}
+        <div id="carousel-featured" class="carousel slide">
+            <div class="carousel-inner" role="listbox">
+                {% for r in news %}
+                    {% set link = path('route_news_show', {id: r.id, slug: r.headline|slugify}) %}
+                    <div class="{% if loop.first %}item active{% else %} item {% endif %}">
+                        <div class="featured-sm__image">
+                            <a href="{{ link }}">
+                                {{ imgs(r.cover|default(r.image), imageSize, r.headline, false, null, false) }}
+                            </a>
+                        </div>
+                        <div class="featured-sm__time">
+                            <i class="fa fa-clock-o">{{ r.publishedDate|localizeddate('medium', 'short') }}</i>
+                        </div>
+                        <div class="featured-sm__headline">
+                            <a href="{{ link }}">{{ r.headline }}</a>
+                        </div>
+                        <div class="featured-sm__subhead">
+                            {{ r.subhead }}
+                        </div>
+                    </div>
+                {% else %}
+                    {# no result#}
+                {% endfor %}
+            </div>
+            <a class="left carousel-control control-sm" href="!#carousel-featured" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control control-sm" href="!#carousel-featured" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="ad-box">
+    {{ ads.google('8354245090', 'rectangle') }}
+</div>
