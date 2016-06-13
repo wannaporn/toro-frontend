@@ -1,0 +1,54 @@
+.latest-index {
+    &__header {
+        border-bottom: $base-main-border;
+        padding-top: $base-padding + 35px;
+        &--main {
+            @include base-header();
+        }
+    }
+    &__right {
+        padding-left: 0;
+    }
+    &__time {
+        @include base-extra();
+        padding-bottom: 5px;
+        i {
+            &:before {
+                padding-right: 5px;
+            }
+        }
+    }
+    &__content {
+        padding: 15px 0;
+        border-bottom: $base-sub-border;
+    }
+    &__headline {
+        @include base-headline();
+        a {
+            &:hover {
+                @include base-hover()
+            }
+        }
+    }
+    &__subhead {
+        @include base-subhead();
+    }
+    &__image {
+        img {
+            width: 100%;
+        }
+    }
+    &--more {
+        text-align: right;
+        padding: 15px 0;
+        a {
+            font-size: 1.3em;
+            &:hover {
+                @include base-hover();
+            }
+        }
+        i {
+            margin-right: 10px;
+        }
+    }
+}

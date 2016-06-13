@@ -1,0 +1,48 @@
+.featured-mobile {
+    padding-bottom: 30px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+    &__image {
+        img {
+            width: 100%;
+        }
+        &:hover {
+            @include base-hover()
+        }
+    }
+    &__content {
+        background: $featured-mobile-content;
+        padding: 5px;
+        &--time {
+            @include base-extra();
+        }
+        &--headline {
+            @include base-headline();
+            padding-right: 10px;
+            &:hover {
+                @include base-hover()
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 767px) {
+    .featured-content {
+        &__image {
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+        &__header {
+            width: 100%;
+            &--headline {
+                font-size: $mobile-headline;
+            }
+        }
+        &__top {
+            width: 90%;
+        }
+    }
+}

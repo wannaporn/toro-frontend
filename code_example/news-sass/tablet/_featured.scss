@@ -1,0 +1,28 @@
+@media only screen and (min-width: 768px) and (max-width: 768px) {
+    .featured-content {
+        &__time {
+            font-size: 0.8em;
+        }
+        &__headline {
+            font-size: 1.4em !important;
+        }
+        &__mobile-subhead {
+            position: static;
+            padding: 5px 0;
+            overflow: auto;
+        }
+    }
+    .featured-social {
+        height: 25px;
+        text-align: right;
+        cursor: pointer;
+        margin-bottom: 15px;
+        &--icon {
+            font-size: 20px;
+            color: $featured-shared-icon;
+            &:hover {
+                @include base-hover()
+            }
+        }
+    }
+}

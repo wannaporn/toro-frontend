@@ -1,0 +1,169 @@
+$news-show-headline: $base-link-color !default;
+$news-show-highlight: $news-show-headline;
+$news-show-main-text: #555 !default;
+$news-show-content: deepskyblue;
+$news-show-author: #222;
+$news-show-date: $news-show-author;
+$news-show-border: #ccc;
+$news-show-meta-time: $news-show-border;
+
+.news-show {
+    &__hr {
+        border-bottom: $base-main-border;
+    }
+    &__right {
+        h3 {
+            margin-top: 0;
+        }
+    }
+    &__cover {
+        img {
+            width: 100%;
+        }
+    }
+    &__meta {
+        padding: 5px 0;
+        font-size: 1em;
+        overflow: hidden;
+        margin-bottom: 15px;
+        &--author {
+            font-size: inherit;
+            border-bottom: 1px solid $news-show-border;
+            margin: 10px 0;
+        }
+        &--published {
+            margin: 5px 0;
+            font-size: inherit;
+        }
+        &--time {
+            font-size: 1em;
+            border-bottom: 1px solid $news-show-border;
+            color: $news-show-meta-time;
+            margin: 5px 0;
+        }
+    }
+    &__editor {
+        &--action {
+            text-align: center;
+        }
+    }
+    &__content {
+        &--headline {
+            color: $news-show-headline;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        &--divider {
+            padding: 0;
+            &:before {
+                content: '//////////';
+                color: $news-show-content;
+                font-size: 1.2em;
+                font-weight: bold;
+            }
+        }
+        &--subhead {
+            margin: 5px 0;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        &--description {
+            margin: 0;
+            font-size: 16px;
+            color: $news-show-main-text;
+        }
+        &--highlight {
+            margin: 40px 0;
+            color: $news-show-highlight;
+            h3 {
+                margin: 5px 0;
+            }
+            &:before, &:after {
+                content: '//////////';
+                color: $news-show-content;
+                font-size: 1.2em;
+                font-weight: bold;
+                margin: 15px 0;
+            }
+        }
+    }
+    &__body {
+        &--image {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        &--content {
+            margin: 5px 0;
+            font-size: 14px;
+            margin-bottom: 50px;
+            color: $news-show-main-text;
+            img {
+                max-width: 555px;
+                height: auto;
+                width: 100%;
+            }
+            &-tab {
+                .tab-pane {
+                    padding-top: 10px;
+                    ul {
+                        list-style: none;
+                        padding: 0;
+
+                        li {
+                            display: inline-block;
+                            padding: 2px 5px;
+
+                            &:before {
+                                content: "\f105";
+                                font: bold normal normal 14px/1 FontAwesome;
+                                margin-right: 4px;
+                                color: #FA1E64;
+                            }
+                        }
+                    }
+                }
+                h3 {
+                    margin: 0 0 10px 0;
+                    padding: 5px;
+                    color: #fff;
+                    background: #0084FF;
+                }
+                table {
+                    border: 1px solid #bbb;
+                    width: 100%;
+                    td {
+                        border-top: 1px solid #ccc;
+                        border-left: 1px solid #ccc;
+                        padding: 5px;
+                    }
+                    tr td:first-child {
+                        border-left: none;
+                    }
+                    thead {
+                        td {
+                            background: #eee;
+                            border-top: 1px solid #bbb;
+                            border-bottom: 1px solid #bbb;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .news-show__body--content {
+        img {
+            width: 100% !important;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .news-show {
+        &__meta {
+            font-size: 1.1em;
+        }
+    }
+}
