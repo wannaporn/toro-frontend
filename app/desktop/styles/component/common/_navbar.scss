@@ -1,6 +1,15 @@
 $menu-link-color : #FFFFFF;
 $default-link-color : #FA1E64;
 
+a{
+    text-decoration: none;
+    color: $default-link-color;
+    &:hover, &:active, &:focus {
+        text-decoration: none;
+        color: $default-link-color;
+    }
+}
+
 .navbar-menu {
     background: #222222;
     height: 75px;
