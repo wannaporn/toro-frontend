@@ -1,0 +1,11 @@
+.balltoro-breadcrumb > li + li:before {
+    color: #ccc;
+    font-family: FontAwesome;
+    content: "\f178";
+    padding: 0 5px;
+    border-radius: 0;
+}
+
+.balltoro-breadcrumb li a{
+    color: #FA1E64!important;
+}
