@@ -1,5 +1,6 @@
 .latest-news {
     &--header {
+        font-size: 1.3em;
         margin-bottom: 15px;
         border-bottom: #FFC025 8px solid;
     }
@@ -24,5 +25,8 @@
     &__separator {
         margin: 15px 0;
         border-bottom: #f1f1f1 1px solid;
+    }
+    & .bottom-space {
+        margin-bottom: 50px;
     }
 }
