@@ -1,30 +1,35 @@
+$latest-date-color: rgba(0, 0, 0, .4);
+$latest-separator-color: #f1f1f1;
+$latest-header-color: #FFC025;
+$latest-details-color: rgba(0, 0, 0, .68);
+
 .latest-news {
-    &--header {
+    &__header {
         font-size: 1.3em;
         margin-bottom: 15px;
-        border-bottom: #FFC025 8px solid;
+        border-bottom: $latest-header-color 8px solid;
     }
-    &--content {
+    &__content {
         display: table;
-        &__image {
+        &--image {
             img {
                 max-width: 100%;
                 max-height: 100%;
             }
         }
-        &__date {
-            color: $default-date-color;
+        &--date {
+            color: $latest-date-color;
         }
-        &__headline {
+        &--headline {
             font-size: 1.2em;
         }
-        &__details {
-            color: rgba(0, 0, 0, .68);
+        &--details {
+            color: $latest-details-color;
         }
     }
     &__separator {
         margin: 15px 0;
-        border-bottom: #f1f1f1 1px solid;
+        border-bottom: $latest-separator-color 1px solid;
     }
     & .bottom-space {
         margin-bottom: 50px;

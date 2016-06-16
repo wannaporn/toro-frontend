@@ -1,6 +1,8 @@
 $default-button-color: #FFFFFF;
 $default-link-color: #FA1E64;
-$default-date-color: rgba(0, 0, 0, .4);
+$featured-date-color: rgba(0, 0, 0, .4);
+$featured-bg-color: #f1f1f1;
+$separator-color: $featured-bg-color;
 
 a {
     color: $default-link-color;
@@ -11,36 +13,8 @@ a {
     }
 }
 
-.social-bar {
-    border-bottom: #FFC025 8px solid;
-}
-
-.social--button {
-    display: inline;
-    color: $default-button-color;
-    text-decoration: none !important;
-    text-align: center;
-    font-size: 2.3em;
-    padding: 5px;
-    &:hover, &:focus, &:active {
-        color: $default-button-color;
-    }
-    &__facebook {
-        background: #3B5998;
-    }
-    &__twitter {
-        background: #55acee;
-    }
-    &__google-plus {
-        background: #dd4b39;
-    }
-    &__line {
-        background: #00DD00;
-    }
-}
-
-.featured--content {
-    background-color: #f1f1f1;
+.featured-content {
+    background-color: $featured-bg-color;
     margin-bottom: 30px;
     &__image {
         img {
@@ -50,7 +24,7 @@ a {
     }
     &__date {
         padding: 5px;
-        color: rgba(0, 0, 0, .4);
+        color: $featured-date-color;
     }
     &__headline {
         padding: 0 5px;
@@ -62,7 +36,7 @@ a {
 
 .bottom-separator {
     margin-bottom: 30px;
-    border-bottom: #f1f1f1 1px solid;
+    border-bottom: $separator-color 1px solid;
 }
 
 .ad-box {
