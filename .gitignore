@@ -9,3 +9,4 @@ test/bower_components
 .idea/modules.xml
 .idea/copyright/profiles_settings.xml
 .idea/workspace.xml
+.idea/*
