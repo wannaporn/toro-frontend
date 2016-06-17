@@ -1,0 +1,16 @@
+$base-widget-bg:#EFEFEF;
+
+.result-board{
+    background: $base-widget-bg;
+    text-align: center;
+
+    &__button{
+        color: red;
+        padding: 0;
+        width :100%;
+        p{
+            margin:0;
+        }
+    }
+}
+
