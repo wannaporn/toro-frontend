@@ -2,6 +2,7 @@ $default-button-color: #FFFFFF;
 $default-link-color: #FA1E64;
 $featured-date-color: rgba(0, 0, 0, .4);
 $featured-bg-color: #f1f1f1;
+$featured-top-border-color: #FFC025;
 $separator-color: $featured-bg-color;
 
 a {
@@ -14,6 +15,7 @@ a {
 }
 
 .featured-content {
+    border-top: $featured-top-border-color 8px solid;
     background-color: $featured-bg-color;
     margin-bottom: 30px;
     &__image {
@@ -43,4 +45,5 @@ a {
     border: #000000 1px solid;
     padding: 25px;
     margin: 30px;
+    text-align: center;
 }
