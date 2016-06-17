@@ -1,65 +1,74 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="styles/main.css">
-    </head>
-    <body>
-    <div class="collapse" id="exCollapsingNavbar">
-        <div class="bg-inverse nav-bar__dropdown nav-bar">
-            <ul class="nav-bar__dropdown--position">
-                <li>
-                    <a href="#" class="nav-list__menu">ผลบอลวันนี้</a>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+
+<div class="collapse" id="exCollapsingNavbar">
+    <div class="bg-inverse bg-color nav-dropdown">
+            <ul class="nav-dropdown--position">
+                <li class="navbar-dropdown__li">
+                    <a href="#" class="navbar-dropdown__a">ผลบอลวันนี้</a>
                 </li>
-                <li>
-                    <a href="#" class="nav-list__menu">ตารางการแข่งขัน</a>
+                <li class="navbar-dropdown__li">
+                    <a href="#" class="navbar-dropdown__a">ตารางการแข่งขัน</a>
                 </li>
-                <li>
-                    <a href="#" class="nav-list__menu" data-toggle="collapse" data-target="#drilldown-1">ข่าวฟุตบอล<i
-                            class="fa fa-chevron-down chevron-icon"></i></a>
+
+
+                <li class="navbar-dropdown__li">
+                    <a href="#" class="navbar-dropdown__a" data-toggle="collapse" data-target="#drilldown-1">ข่าวฟุตบอล<i class="fa fa-chevron-down chevron-icon"></i></a>
                     <ul id="drilldown-1" class="nav nav-pills nav-stacked collapse">
-                        <li><a href="#" class="nav-list__menu--collapse"><i
-                                class="fa fa-angle-right angle-right--icon"></i>English Premier League</a></li>
-                        <li><a href="#" class="nav-list__menu--collapse"><i
-                                class="fa fa-angle-right angle-right--icon"></i>Thai Premier League</a></li>
-                        <li><a href="#" class="nav-list__menu--collapse"><i
-                                class="fa fa-angle-right angle-right--icon"></i>ข่าวทั้งหมด</a></li>
+                        <li><a href="#" class="navbar-dropdown__a--collapse"><i class="fa fa-angle-right angle-right--icon"></i>English Premier League</a></li>
+                        <li><a href="#" class="navbar-dropdown__a--collapse"><i class="fa fa-angle-right angle-right--icon"></i>Thai Premier League</a></li>
+                        <li><a href="#" class="navbar-dropdown__a--collapse"><i class="fa fa-angle-right angle-right--icon"></i>ข่าวทั้งหมด</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#" class="nav-list__menu" data-toggle="collapse" data-target="#drilldown-2">สกู๊ปฟุตบอล<i
-                            class="fa fa-chevron-down chevron-icon"></i></a>
+
+                <li class="navbar-dropdown__li">
+                    <a href="#" class="navbar-dropdown__a" data-toggle="collapse" data-target="#drilldown-2">สกู๊ปฟุตบอล<i class="fa fa-chevron-down chevron-icon"></i></a>
                     <ul id="drilldown-2" class="nav nav-pills nav-stacked collapse">
-                        <li><a href="#" class="nav-list__menu--collapse"><i
-                                class="fa fa-angle-right angle-right--icon"></i>English Premier League</a></li>
-                        <li><a href="#" class="nav-list__menu--collapse"><i
-                                class="fa fa-angle-right angle-right--icon"></i>Thai Premier League</a></li>
-                        <li><a href="#" class="nav-list__menu--collapse"><i
-                                class="fa fa-angle-right angle-right--icon"></i>สกู๊ปทั้งหมด</a></li>
+                        <li><a href="#" class="navbar-dropdown__a--collapse"><i class="fa fa-angle-right angle-right--icon"></i>English Premier League</a></li>
+                        <li><a href="#" class="navbar-dropdown__a--collapse"><i class="fa fa-angle-right angle-right--icon"></i>Thai Premier League</a></li>
+                        <li><a href="#" class="navbar-dropdown__a--collapse"><i class="fa fa-angle-right angle-right--icon"></i>สกู๊ปทั้งหมด</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#" class="nav-list__menu" type="button"><i class="fa fa-sign-in fa-2x"></i> เข้าสู่ระบบ</a>
+
+
+                <li class="navbar-dropdown__li">
+
+                    <a href="#" class="navbar-dropdown__a" type="button"><i class="fa fa-sign-in fa-2x"></i> เข้าสู่ระบบ</a>
                 </li>
             </ul>
-        </div>
+
     </div>
-    <nav class="navbar-fixed-top bg-inverse ">
-        <div class="nav-bar">
-            <a href="#">
-                <img class="nav-bar__logo " src="https://balltoro.com/ui/web/images/main-logo.png">
-            </a>
-            <button class="navbar-toggler pull-xs-right nav-bar__toggler" type="button" data-toggle="collapse"
-                    data-target="#exCollapsingNavbar">
-                <i class="fa fa-bars"></i>
-            </button>
-        </div>
-    </nav>
-    <!--script-->
-    <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/tether/dist/js/tether.min.js"></script>
-    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!--end_script-->
-    </body>
+</div>
+
+
+<nav class="navbar-fixed-top bg-inverse bg-color">
+    <img class="navbar-logo" src="https://balltoro.com/ui/web/images/main-logo.png">
+    <button class="navbar-toggler pull-xs-right toggler" type="button" data-toggle="collapse"
+            data-target="#exCollapsingNavbar">
+        &#9776;
+    </button>
+
+</nav>
+
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li class="active">Library</li>
+</ol>
+
+
+
+
+<!--script-->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/tether/dist/js/tether.min.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!--end_script-->
+</body>
 </html>
