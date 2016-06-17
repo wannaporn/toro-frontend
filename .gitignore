@@ -14,3 +14,4 @@ app/mobile/.idea/copyright/profiles_settings.xml
 app/mobile/.idea/workspace.xml
 app/mobile/.idea/modules.xml
 app/mobile/.idea/*
+app/mobile/styles/component/news/_scoreboard.scss
