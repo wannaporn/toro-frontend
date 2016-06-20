@@ -1,35 +1,35 @@
-$date-selector-color : #F0F0F0;
-$league-toggle-color : $date-selector-color;
-$league-toggle-bottom : #CECBCB;
-$score-table-bottom : #f2f2f2;
-$score-color : #0672BC;
-$score-result-ft : #CCCCCC;
+$date-selector-color: #F0F0F0;
+$league-toggle-color: $date-selector-color;
+$league-toggle-bottom: #CECBCB;
+$score-table-bottom: #f2f2f2;
+$score-color: #0672BC;
+$score-result-ft: #CCCCCC;
 
-.date-selector{
+.date-selector {
     background: $date-selector-color;
     width: 100%;
     cursor: pointer;
     padding: 8px;
-    &__list{
-        width: 100%!important;
+    &__list {
+        width: 100% !important;
         margin-top: 1em;
     }
 }
 
-.league-toggle{
+.league-toggle {
     background: $league-toggle-color;
     border-bottom: $league-toggle-bottom 1px solid;
     cursor: pointer;
     padding: 10px;
     font-size: 0.8em;
     font-weight: 600;
-    &.collapsed:after{
+    &.collapsed:after {
         content: " + ";
         float: right;
         font-size: 20px;
         line-height: 20px;
     }
-    &:after{
+    &:after {
         content: " − ";
         float: right;
         font-size: 20px;
@@ -37,54 +37,54 @@ $score-result-ft : #CCCCCC;
     }
 }
 
-.match-score{
-    &__table{
+.match-score {
+    &__table {
         display: table;
         padding: 8px;
         width: 100%;
         border-bottom: $score-table-bottom 1px solid;
         font-weight: 700;
         vertical-align: middle;
-        a{
+        a {
             display: block;
-            &:hover{
+            &:hover {
                 text-decoration: none;
             }
         }
-        span{
+        span {
             display: inline-table;
             vertical-align: middle;
         }
-        &:hover{
+        &:hover {
             background-color: $score-table-bottom;
         }
     }
-    &__logo{
+    &__logo {
         width: 8%;
         text-align: center;
     }
-    &__home{
+    &__home {
         text-align: right;
         width: 30%;
     }
-    &__score{
+    &__score {
         text-align: center;
         width: 5%;
         font-size: 1.2em;
         color: $score-color;
     }
-    &__result{
+    &__result {
         text-align: center;
         margin: 0 auto;
         width: 10%;
-        &--ft{
+        &--ft {
             background-color: $score-result-ft;
             border-radius: 20px;
             width: 80%;
             color: #FFFFFF;
         }
     }
-    &__away{
+    &__away {
         text-align: left;
         width: 30%;
     }
